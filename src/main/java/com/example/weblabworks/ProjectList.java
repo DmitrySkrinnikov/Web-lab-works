@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Servlet implementation class ProjectList
@@ -38,26 +40,43 @@ public class ProjectList extends HttpServlet {
                                   HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");
+
+        String lang = request.getParameter("lang");
+        if (lang == null) lang = "ru";
+        if(!"en".equalsIgnoreCase(lang) && !"ru".equalsIgnoreCase(lang))
+        {
+            response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE,
+                            "Параметр lang может принимать значения en или ru");
+            return;
+        }
+
         String customer = request.getParameter("customer");
         String done = request.getParameter("done");
         response.setContentType("text/html;charset=UTF-8");
+        ResourceBundle res = ResourceBundle.getBundle(
+                "Project",
+                          "en".equalsIgnoreCase(lang) ? Locale.ENGLISH : Locale.getDefault());
         PrintWriter out = response.getWriter();
         try {
-
             out.println("<html>");
             out.println("<head><title>Список проектов</title></head>");
             out.println("<body>");
-            out.println("<h1>Список проектов " +
-                    (customer != null ? "Заказчик: " + customer + " ": "") +
-                    (done != null ? "Выполненость: " + done + " ": "") +"</h1>");
+            out.println("<h1>" + res.getString("list_project") + " "+
+                    (customer != null ? res.getString("customer") + ": " + customer + " ": "") +
+                    (done != null ? res.getString("done") + ": " +
+                            (done.equals("Да") ? res.getString("yes") : res.getString("no")) +
+                            " ": "") +"</h1>");
             out.println("<table border='1'>");
-            out.println("<td><b>Проект </b></td><td><b>Заказчик </b></td><td><b>Выполнен </b></td></tr>");
+            out.println("<td><b>" + res.getString("project") + " </b></td>" +
+                        "<td><b>" + res.getString("customer") + " </b></td>" +
+                        "<td><b>" + res.getString("done")+ " </b></td></tr>");
             for (Project p : projects) {
                 if ((p.getCustomer().equals(customer) || customer == null) &&
                         (p.getDone().equals(done) || done == null)) {
                     out.println("<tr><td>" + p.getProject() +  " </td><td>" +
                             p.getCustomer() + " </td><td>" +
-                            p.getDone() +" </td></tr>");
+                            (p.getDone().equals("Да") ? res.getString("yes"):
+                                    res.getString("no")) +" </td></tr>");
                 }
             }
             out.println("</table>");
