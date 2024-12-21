@@ -1,3 +1,4 @@
+<%@ page import="java.net.URLDecoder" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" errorPage="/Error.jsp"%>
@@ -48,7 +49,26 @@
                 </tr>
             </c:if>
         </c:forEach>
-    </table>
+    </table><br>
+    <h3>Найти заказчика</h3>
+    <div id="search">
+        <form method="get" action="ProjectListJSP">
+            <input name="customer"
+                <%
+	 		// Выбор всех Cookie
+	 		Cookie [] c = request.getCookies();
+	 			if(c != null)
+	 		for(int i = 0; i < c.length; i++)
+			 	if("project.customer".equals(c[i].getName()))
+			 	{
+			 	// Запись значения в поле ввода, если найден Cookie
+			 	out.print(" value='" + URLDecoder.decode(c[i].getValue(), "UTF-8") + "' ");
+			 	break;
+			 	}
+	 		%>>
+            <button type="submit">Отправить</button>
+        </form>
+    </div>
 </main>
 <%@include file="footer.jsp"%>
 </body>

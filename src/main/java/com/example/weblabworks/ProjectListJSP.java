@@ -1,10 +1,12 @@
 package com.example.weblabworks;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.io.IOException;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -63,6 +65,15 @@ public class ProjectListJSP extends HttpServlet {
         request.setAttribute("res", res);
         request.setAttribute("customer", customer);
         request.setAttribute("done", done);
+
+        Cookie c;
+        // Сохранение автора в Cookie
+        if (customer != null) {
+            c = new Cookie("project.customer", URLEncoder.encode(customer, "UTF-8"));
+            // Установка времени жизни Cookie в секундах
+            c.setMaxAge(100);
+            response.addCookie(c);
+        }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("main.jsp");
         dispatcher.forward(request, response);
