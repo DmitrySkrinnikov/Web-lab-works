@@ -8,8 +8,16 @@
         <servlet-name>ProjectList</servlet-name>
         <servlet-class>com.example.weblabworks.ProjectList</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProjectListJSP</servlet-name>
+        <servlet-class>com.example.weblabworks.ProjectListJSP</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProjectList</servlet-name>
         <url-pattern>/ProjectList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProjectListJSP</servlet-name>
+        <url-pattern>/ProjectListJSP</url-pattern>
     </servlet-mapping>
 </web-app>

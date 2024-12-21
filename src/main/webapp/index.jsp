@@ -8,6 +8,7 @@
 <h1><%= "Work with Projects!" %>
 </h1>
 <br/>
-<a href="ProjectList">ProjectList</a>
+<a href="ProjectList">ProjectList</a><br>
+<a href="ProjectListJSP">JSP-ProjectList</a>
 </body>
 </html>
